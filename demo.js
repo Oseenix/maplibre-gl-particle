@@ -1,8 +1,11 @@
-import mapboxgl from "mapbox-gl";
+// import mapboxgl from "mapbox-gl";
+import maplibregl from "maplibre-gl";
 import * as windGL from "./src";
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiYXN0cm9zYXQiLCJhIjoiY2o3YWtjNnJzMGR6ajM3b2FidmNwaDNsaSJ9.lwWi7kOiejlT0RbD7RxtmA";
+// mapboxgl.accessToken =
+//  "pk.eyJ1IjoiemhvdWppbnplIiwiYSI6ImNtMDR0ZmVmNTBic2wya3ByYzJzZWs4aWkifQ.w6htbe9KoxGSBx_v94PfOQ";
+
+const lightStyleUrl = "https://demotiles.maplibre.org/style.json";
 
 let mapContainer1 = document.getElementById("map1");
 let mapContainer2 = document.getElementById("map2");
@@ -11,19 +14,20 @@ let map1, map2;
 
 const configs = [
   {
-    style: "mapbox://styles/mapbox/light-v9",
+    style: lightStyleUrl,
     layers: [
-      { type: "sampleFill", after: "road-pedestrian-case" },
-      { type: "particles", after: "waterway-label" }
+      { type: "sampleFill", after: "coastline" },
+      { type: "particles", after: "coastline" }
     ],
     flyTo: { zoom: 2 }
   },
   {
-    style: "mapbox://styles/mapbox/dark-v9",
+    // style: "mapbox://styles/mapbox/dark-v9",
+    style: lightStyleUrl,
     layers: [
       {
         type: "arrow",
-        after: "road-pedestrian-case",
+        after: "coastline",
         properties: {
           "arrow-min-size": 80,
           "arrow-color": [
@@ -53,11 +57,11 @@ const configs = [
     flyTo: { pitch: 30, zoom: 2.5, center: [0, 45] }
   },
   {
-    style: "mapbox://styles/mapbox/light-v9",
+    style: lightStyleUrl,
     layers: [
       {
         type: "particles",
-        after: "waterway-label",
+        after: "coastline",
         properties: {
           "particle-speed": [
             "interpolate",
@@ -75,11 +79,11 @@ const configs = [
     flyTo: { zoom: 2, center: [50, -10] }
   },
   {
-    style: "mapbox://styles/mapbox/light-v9",
+    style: lightStyleUrl,
     layers: [
       {
         type: "sampleFill",
-        after: "road-pedestrian-case",
+        after: "coastline",
         properties: {
           "sample-fill-color": [
             "interpolate",
@@ -108,7 +112,7 @@ const configs = [
       },
       {
         type: "arrow",
-        after: "waterway-label",
+        after: "coastline",
         properties: {
           "arrow-min-size": 30,
           "arrow-color": [
@@ -143,7 +147,7 @@ const configs = [
 ];
 
 function initializeConfig(container, { style, layers }) {
-  const map = new mapboxgl.Map({
+  const map = new maplibregl.Map({
     container: container,
     style
   });

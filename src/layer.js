@@ -1,5 +1,6 @@
 import * as util from "./util";
-import { expression } from "mapbox-gl/dist/style-spec";
+// import { expression } from "mapbox-gl/dist/style-spec";
+import { expression } from "@maplibre/maplibre-gl-style-spec";
 import tileID from "./tileID";
 
 /**

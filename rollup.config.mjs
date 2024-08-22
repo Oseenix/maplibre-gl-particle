@@ -1,12 +1,20 @@
-import buble from "rollup-plugin-buble";
-import pkg from "./package.json";
-import commonjs from "rollup-plugin-commonjs";
-import resolve from "rollup-plugin-node-resolve";
+// import buble from "rollup-plugin-buble";
+// import pkg from "./package.json";
+// import commonjs from "rollup-plugin-commonjs";
+// import resolve from "rollup-plugin-node-resolve";
+
+import pkg from './package.json' assert { type: 'json' };
+
+import buble from '@rollup/plugin-buble';
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 
 import { compile as glslify } from "glslify";
 import * as GLSLX from "glslx";
 import { dirname } from "path";
 import { createFilter } from "rollup-pluginutils";
+
 
 function makeGLSL(userOptions = {}) {
   const options = Object.assign(
@@ -36,7 +44,7 @@ function makeGLSL(userOptions = {}) {
         ""
       );
 
-      const compiled = GLSLX.compile(codeWithDeps, {
+      const compiled = GLSLX.default.compile(codeWithDeps, {
         disableRewriting: false,
         format: "json",
         keepSymbols: false,
@@ -120,12 +128,17 @@ function makeGLSL(userOptions = {}) {
 const plugins = [
   makeGLSL({ include: "./src/shaders/*.glsl" }),
   resolve(),
-  commonjs({
-    namedExports: {
-      "node_modules/mapbox-gl/dist/style-spec/index.js": ["expression"]
-    }
-  }),
-  buble()
+  commonjs(),
+  babel({
+    babelHelpers: 'bundled',
+    exclude: [
+      'node_modules/@maplibre*/**',
+      'node_modules/maplibre*/**'
+    ],
+    presets: ['@babel/preset-env']
+  })
+  // buble()
+  // babel()
 ];
 
 export default [
@@ -151,7 +164,7 @@ export default [
         format: "es"
       }
     ],
-    external: ["mapbox-gl/dist/style-spec"],
+    external: ["maplibre-gl/dist/style-spec"],
     plugins
   }
 ];
